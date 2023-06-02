@@ -1,5 +1,5 @@
 {
-
+    
     "builds":[
         {
             "src":"index.js",
@@ -9,7 +9,7 @@
     "routes":[
         {
             "src":"/(.*)",
-            "dest":"/"
+            "dest":"index.js"
         }
     ]
 }
