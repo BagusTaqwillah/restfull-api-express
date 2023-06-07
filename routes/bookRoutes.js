@@ -1,10 +1,10 @@
-const { book, addBook, bookId, deleteBook, updateBook } = require("../controller/Book")
-const { route } = require("./authRoutes")
-const {verifyToken}=require("../middleware/verifyToken")
-const router=require("express").Router()
-router.get("/book",verifyToken,book)
-router.post("/addBook",addBook)
-router.get("/book/:id",bookId)
-router.delete("/book/:id",deleteBook)
-router.put("/book/:id",updateBook)
-module.exports=router
+import { book, addBook, bookId, deleteBook, updateBook } from"../controller/Book.js"
+import express from "express"
+const bookRouter=express.Router()
+bookRouter.get("/book",book)
+bookRouter.post("/addBook",addBook)
+bookRouter.get("/book/:id",bookId)
+bookRouter.delete("/book/:id",deleteBook)
+bookRouter.put("/book/:id",updateBook)
+
+export default bookRouter

@@ -1,15 +1,19 @@
-const {Auth}=require("../models")
-var bcrypt = require('bcrypt');
-const jwt=require("jsonwebtoken");
+import Auth from"../models/auth.js"
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 var salt = bcrypt.genSaltSync(10);
-function allUser(req,res){
-    Auth.findAll().then(result=>{
-        res.json({
-            data:result
+export const allUser=async (req,res)=>{
+    try {   
+        Auth.findAll().then(result=>{
+            res.json({
+                data:result
+            })
         })
-    })
+    } catch (error) {
+       res.json(error) 
+    }
 }
-function signIn(req,res){
+export const signIn=async(req,res)=>{
     try {
         var password=req.body.password
         const passHash=bcrypt.hashSync(password,salt)
@@ -36,46 +40,41 @@ function signIn(req,res){
         })
     }
  }
- const logIn=async (req,res)=>{
-    try {  
-        await Auth.findOne({where:{
-            email:req.body.email
-        }}).then(result=>{
+ export const logIn=async (req,res)=>{ 
+        await Auth.findOne({
+            where:{
+                email:req.body.email
+            }
+        }).then( result=>{
             if (result) {
+                var id =result.id
                 var verifikasi=bcrypt.compareSync(req.body.password,result.password)
                 if (verifikasi==true) {
                     const accesToken=jwt.sign({result},process.env.ACCESS_TOKEN,{
-                        expiresIn:"30s"
+                        expiresIn:"20s"
                     })
                     const refreshToken=jwt.sign({result},process.env.REFRESH_TOKEN,{
-                        expiresIn:"10s"
+                        expiresIn:"1d"
                     })
-                    Auth.update({token:refreshToken},{where:{
-                        id:result.id
+                   Auth.update({"token":refreshToken},{where:{
+                        id:id
                     }})
                     res.cookie("refreshToken",refreshToken,{
                         httpOnly:true,
                         maxAge:24 * 60 * 60 * 1000
                     })
-                 res.json({accesToken})   
+                 res.json({
+                    msg:"succes login"
+                 })   
                 }else{
                     return res.status(303).json({
                         msg:"wrong password"
                     })
                 }
-            }else{
+            }  else{
                 res.status(404).json({
                     msg:"email not register"
                 })
             }
-    })
-    } catch (error) {
-        
-    }
- }
-
-module.exports={
-    signIn,
-    logIn,
-    allUser
-}
+        })
+    } 

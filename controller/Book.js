@@ -1,10 +1,10 @@
-const { where } = require("sequelize")
-const {Book}=require("../models")
-const book=async (req,res)=>{
+import Book from "../models/book.js"
+export const book=async (req,res)=>{
     try {
         await Book.findAll().then(result=>{
+            console.log(result)
             res.json({
-                status:"all book",
+                status:"ok",
                 data:result
             })
         })
@@ -14,7 +14,7 @@ const book=async (req,res)=>{
         })
     }
 }
-function addBook(req,res) {
+export function addBook(req,res) {
     const{title,deskripsi,img}=req.body
     const data={
         title:title,
@@ -34,7 +34,7 @@ function addBook(req,res) {
         })
     }
 }
-const bookId=async (req,res)=>{
+export const bookId=async (req,res)=>{
     try {
         const {id}=req.params
         await Book.findByPk(id).then(result=>{
@@ -55,7 +55,7 @@ const bookId=async (req,res)=>{
         })
     }
 }
-const deleteBook=async (req,res)=>{
+export const deleteBook=async (req,res)=>{
     try {
         const {id}=req.params
         await Book.destroy({where:{
@@ -78,7 +78,7 @@ const deleteBook=async (req,res)=>{
         })
     }
 }
-function updateBook(req,res){
+export function updateBook(req,res){
  try {
     const {id}=req.params
     const {title,deskripsi,img}=req.body
@@ -99,11 +99,4 @@ function updateBook(req,res){
         msg:"forbiden"
     })
  }
-}
-module.exports={
-    book,
-    addBook,
-    bookId,
-    deleteBook,
-    updateBook
 }
