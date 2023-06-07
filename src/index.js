@@ -2,9 +2,9 @@ import  express from "express"
 import bodyParser from "body-parser"
 import dotenv from"dotenv"
 dotenv.config()
-import db from"./config/database.js"
-import authRouter from "./routes/authRoutes.js"
-import bookRouter from "./routes/bookRoutes.js"
+import db from"../config/database.js"
+import authRouter from "../routes/authRoutes.js"
+import bookRouter from "../routes/bookRoutes.js"
 const app=express()
 try { 
     await db.authenticate();
