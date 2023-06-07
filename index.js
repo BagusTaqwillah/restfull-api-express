@@ -14,8 +14,8 @@ try {
 }
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
-app.listen(process.env.PORT,()=>{
-    console.log(`server berjalan  pada port ${process.env.PORT}`)
+app.listen(4300,()=>{
+    console.log(`server berjalan  pada port 4300`)
 })
 app.get("/",(req,res)=>{
     res.json({
